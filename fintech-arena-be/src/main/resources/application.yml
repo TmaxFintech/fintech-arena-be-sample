@@ -1,0 +1,35 @@
+debug: false # debug 설정
+management.endpoints.web.exposure.include: "*" # actuator
+
+logging: # logging 설정
+  level:
+    com.fastcampus.projectboard: debug
+    org.springframework.web.servlet: debug # 리퀘스트, 리스폰스 관찰
+    org.hibernate.type.descriptor.sql.BasicBinder: trace # 쿼리 관찰
+
+spring:
+  datasource: # database 설정
+    url: jdbc:mysql://localhost:3306/board
+    username: root
+    password: tmaxfintech
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    defer-datasource-initialization: true # 테스트용 db 생성 (resources 안에 쿼리 파일)
+    hibernate.ddl-auto: create # 자동으로 class를 보고 DDL문 생성
+    show-sql: true # 쿼리 노출
+    properties: # jpa 구현체 종속 (mysql용)
+      hibernate.format_sql: true # 쿼리문 예쁘게 포매팅
+      hibernate.default_batch_fetch_size: 100 # n+1 쿼리 해결 (100개 단위로 묶어서 bulk)
+  h2.console.enabled: true # h2
+  sql.init.mode: always # resources 안의 data.sql을 언제 사용할 것인지
+
+---
+
+spring:
+  config.activate.on-profile: testdb
+  datasource:
+    url: jdbc:h2:mem:board;mode=mysql # 호환성 검사
+    driver-class-name: org.h2.Driver
+  sql.init.mode: always
+  test.database.replace: none # @DataJpaTest에 기본 테스트 디비가 적용되는데, 이걸 통해 yml에 정의된 해당 testdb를 적용시켜줌

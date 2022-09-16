@@ -28,8 +28,8 @@ spring:
 
 spring:
   config.activate.on-profile: testdb
-#  datasource:
-#    url: jdbc:h2:mem:board;mode=mysql
-#    driver-class-name: org.h2.Driver
-#  sql.init.mode: always
-#  test.database.replace: none
+  datasource:
+    url: jdbc:h2:mem:board;mode=mysql # 호환성 검사
+    driver-class-name: org.h2.Driver
+  sql.init.mode: always
+  test.database.replace: none # @DataJpaTest에 기본 테스트 디비가 적용되는데, 이걸 통해 yml에 정의된 해당 testdb를 적용시켜줌

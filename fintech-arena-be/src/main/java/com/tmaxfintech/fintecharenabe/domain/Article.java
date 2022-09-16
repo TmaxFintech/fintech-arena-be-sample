@@ -7,10 +7,13 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString
@@ -20,6 +23,8 @@ import java.util.Objects;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
+
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Article {
     @Id
@@ -30,6 +35,9 @@ public class Article {
     @Setter @Column(nullable = false, length = 10000) private String content; // 본문
 
     @Setter private String hashtag; // 해시태그, @Transient 같은게 있지 않다면 기본적으로 @Column은 있다고 본다
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) @ToString.Exclude // 운영에서 문제 발생 할 수 있음. 댓글을 백업시켜야할 수 있다, 순환참조 막음
+    private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     @CreatedDate @Column(nullable = false) private LocalDateTime createdAt; // 생성일시
     @CreatedBy @Column(nullable = false, length = 100) private String createdBy; // 생성자

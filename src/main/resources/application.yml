@@ -1,4 +1,3 @@
-
 debug: false # debug 설정
 management.endpoints.web.exposure.include: "*" # actuator
 

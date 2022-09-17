@@ -23,10 +23,8 @@ import java.util.Set;
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 })
-
-@EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Article {
+public class Article extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // mysql은 auto로 하면 안됨
     private Long id; // id는 setter를 걸지 않는다. jpa 가 자동으로 해주는 것이므로.
@@ -38,11 +36,6 @@ public class Article {
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) @ToString.Exclude // 운영에서 문제 발생 할 수 있음. 댓글을 백업시켜야할 수 있다, 순환참조 막음
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
-
-    @CreatedDate @Column(nullable = false) private LocalDateTime createdAt; // 생성일시
-    @CreatedBy @Column(nullable = false, length = 100) private String createdBy; // 생성자
-    @LastModifiedDate @Column(nullable = false) private LocalDateTime modifiedAt; // 수정일시
-    @LastModifiedBy @Column(nullable = false, length = 100) private String modifiedBy; // 수정자
 
     protected Article() {} // 외부에서 사용할 일 없음. 하이버네이트는 기본 생성자가 필요
 

@@ -1,4 +1,4 @@
-package com.tmaxfintech.fintecharenabe.domain.config;
+package com.tmaxfintech.fintecharenabe.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

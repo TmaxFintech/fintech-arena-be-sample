@@ -44,7 +44,7 @@ class ArticleControllerTest {
         // When & Then
         mvc.perform(get("/articles/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article")) // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
                 .andExpect(model().attributeExists("articleComments")); // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
@@ -60,7 +60,7 @@ class ArticleControllerTest {
         // When & Then
         mvc.perform(get("/articles/search"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/search"));
 
     }
@@ -74,7 +74,7 @@ class ArticleControllerTest {
         // When & Then
         mvc.perform(get("/articles/search-hashtag"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/search-hashtag"));
 
     }

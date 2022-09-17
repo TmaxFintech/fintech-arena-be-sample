@@ -21,7 +21,7 @@ class ArticleControllerTest {
         this.mvc = mvc;
     }
 
-    @Disabled("구현중") // 통과하는 테스트가 아니므로 build 가 안될 것이므로 제외함
+//    @Disabled("구현중") // 통과하는 테스트가 아니므로 build 가 안될 것이므로 제외함
     @DisplayName("[view][GET] 게시글 리스트 (게시판) 페이지 - 정상 호출")
     @Test
     public void givenNoting_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
@@ -30,8 +30,8 @@ class ArticleControllerTest {
         // When & Then
         mvc.perform(get("/articles"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.TEXT_HTML))
-                .andExpect(view().name("articles/index"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("articles/index")) // 디렉토리 위치와 파일명
                 .andExpect(model().attributeExists("articles")); // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
     }
 

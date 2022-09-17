@@ -21,7 +21,6 @@ spring:
     properties: # jpa 구현체 종속 (mysql용)
       hibernate.format_sql: true # 쿼리문 예쁘게 포매팅
       hibernate.default_batch_fetch_size: 100 # n+1 쿼리 해결 (100개 단위로 묶어서 bulk)
-  h2.console.enabled: true # h2
   sql.init.mode: always # resources 안의 data.sql을 언제 사용할 것인지
 
 ---

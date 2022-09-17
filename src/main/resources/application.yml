@@ -22,13 +22,6 @@ spring:
       hibernate.format_sql: true # 쿼리문 예쁘게 포매팅
       hibernate.default_batch_fetch_size: 100 # n+1 쿼리 해결 (100개 단위로 묶어서 bulk)
   sql.init.mode: always # resources 안의 data.sql을 언제 사용할 것인지
-
----
-
-spring:
-  config.activate.on-profile: testdb
-  datasource:
-    url: jdbc:h2:mem:board;mode=mysql # 호환성 검사
-    driver-class-name: org.h2.Driver
-  sql.init.mode: always
-  test.database.replace: none # @DataJpaTest에 기본 테스트 디비가 적용되는데, 이걸 통해 yml에 정의된 해당 testdb를 적용시켜줌
+  data.rest:
+    base-path: /api
+    detection-strategy: annotated

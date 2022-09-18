@@ -40,7 +40,7 @@ class JpaRepositoryTest {
         // Then
         assertThat(articles)
                 .isNotNull()
-                .hasSize(100);
+                .hasSize(123);
     }
 
     @DisplayName("insert 테스트")
@@ -85,6 +85,6 @@ class JpaRepositoryTest {
 
         // Then
         assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
-        assertThat(articleRepository.count()).isEqualTo(previousArticleCommentCount - deletedCommentsSize);
+        assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - deletedCommentsSize);
     }
 }

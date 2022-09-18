@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("View 컨트롤러 - 게시")
-@WebMvcTest(ArticleController.class) // 해당 컨트롤러만 입력받음 (경량화)
+@DisplayName("View 컨트롤러 - 게시글")
+@WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
     private final MockMvc mvc;
@@ -21,24 +21,22 @@ class ArticleControllerTest {
         this.mvc = mvc;
     }
 
-//    @Disabled("구현중") // 통과하는 테스트가 아니므로 build 가 안될 것이므로 제외함
     @DisplayName("[view][GET] 게시글 리스트 (게시판) 페이지 - 정상 호출")
     @Test
-    public void givenNoting_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
+    public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
         // Given
 
         // When & Then
         mvc.perform(get("/articles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("articles/index")) // 디렉토리 위치와 파일명
-                .andExpect(model().attributeExists("articles")); // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
+                .andExpect(view().name("articles/index"))
+                .andExpect(model().attributeExists("articles"));
     }
 
-    @Disabled("구현중")
     @DisplayName("[view][GET] 게시글 상세 페이지 - 정상 호출")
     @Test
-    public void givenNoting_whenRequestingArticlesView_thenReturnsArticleView() throws Exception {
+    public void givenNothing_whenRequestingArticleView_thenReturnsArticleView() throws Exception {
         // Given
 
         // When & Then
@@ -46,36 +44,34 @@ class ArticleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
-                .andExpect(model().attributeExists("article")) // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
-                .andExpect(model().attributeExists("articleComments")); // 뷰는 데이터가 있어야함. (미리 예상하고 테스트 작성)
-
+                .andExpect(model().attributeExists("article"))
+                .andExpect(model().attributeExists("articleComments"));
     }
 
-    @Disabled("구현중")
+    @Disabled("구현 중")
     @DisplayName("[view][GET] 게시글 검색 전용 페이지 - 정상 호출")
     @Test
-    public void givenNoting_whenRequestingArticleSearchView_thenReturnsArticlesView() throws Exception {
+    public void givenNothing_whenRequestingArticleSearchView_thenReturnsArticleSearchView() throws Exception {
         // Given
 
         // When & Then
         mvc.perform(get("/articles/search"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("articles/search"));
-
+                .andExpect(model().attributeExists("articles/search"));
     }
 
-    @Disabled("구현중")
+    @Disabled("구현 중")
     @DisplayName("[view][GET] 게시글 해시태그 검색 페이지 - 정상 호출")
     @Test
-    public void givenNoting_whenRequestingArticleHashtagSearchView_thenReturnsHashtagSearchView() throws Exception {
+    public void givenNothing_whenRequestingArticleHashtagSearchView_thenReturnsArticleHashtagSearchView() throws Exception {
         // Given
 
         // When & Then
         mvc.perform(get("/articles/search-hashtag"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(view().name("articles/search-hashtag"));
-
+                .andExpect(model().attributeExists("articles/search-hashtag"));
     }
+
 }

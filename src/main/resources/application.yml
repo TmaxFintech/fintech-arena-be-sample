@@ -10,8 +10,8 @@ logging:
 spring:
   datasource: # database 설정
     url: jdbc:mysql://192.168.158.142:3306/arena
-    username: user
-    password: user
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     defer-datasource-initialization: true

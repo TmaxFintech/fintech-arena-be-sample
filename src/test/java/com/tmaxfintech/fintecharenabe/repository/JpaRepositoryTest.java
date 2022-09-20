@@ -1,32 +1,35 @@
 package com.tmaxfintech.fintecharenabe.repository;
 
-import com.tmaxfintech.fintecharenabe.domain.Article;
 import com.tmaxfintech.fintecharenabe.config.JpaConfig;
+import com.tmaxfintech.fintecharenabe.domain.Article;
+import com.tmaxfintech.fintecharenabe.domain.UserAccount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.*;
+import java.util.List;
 
-@ActiveProfiles("testdb")
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DisplayName("JPA 연결 테스트")
 @Import(JpaConfig.class)
-@DataJpaTest // 생성자 주입이 아래와 같이 가능해짐
+@DataJpaTest
 class JpaRepositoryTest {
 
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final UserAccountRepository userAccountRepository;
 
     public JpaRepositoryTest(
             @Autowired ArticleRepository articleRepository,
-            @Autowired ArticleCommentRepository articleCommentRepository
+            @Autowired ArticleCommentRepository articleCommentRepository,
+            @Autowired UserAccountRepository userAccountRepository
     ) {
         this.articleRepository = articleRepository;
-
         this.articleCommentRepository = articleCommentRepository;
+        this.userAccountRepository = userAccountRepository;
     }
 
     @DisplayName("select 테스트")
@@ -35,7 +38,7 @@ class JpaRepositoryTest {
         // Given
 
         // When
-        var articles = articleRepository.findAll();
+        List<Article> articles = articleRepository.findAll();
 
         // Then
         assertThat(articles)
@@ -47,10 +50,12 @@ class JpaRepositoryTest {
     @Test
     void givenTestData_whenInserting_thenWorksFine() {
         // Given
-        var previousCount = articleRepository.count();
+        long previousCount = articleRepository.count();
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        Article article = Article.of(userAccount, "new article", "new content", "#spring");
 
         // When
-        var savedArticle = articleRepository.save(Article.of("new article", "new content", "#tmaxfintech"));
+        articleRepository.save(article);
 
         // Then
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
@@ -60,12 +65,12 @@ class JpaRepositoryTest {
     @Test
     void givenTestData_whenUpdating_thenWorksFine() {
         // Given
-        var article = articleRepository.findById(1L).orElseThrow(); // 없으면 test 종료
-        var updatedHashtag = "#tmaxcommerce";
+        Article article = articleRepository.findById(1L).orElseThrow();
+        String updatedHashtag = "#springboot";
         article.setHashtag(updatedHashtag);
 
         // When
-        var savedArticle = articleRepository.saveAndFlush(article); // flush를 해줘야함. update query발생시킴, 메소드단위로 자동으로 트랜잭셔널 걸려있음 (@DataJpaTest). 기본값 롤백
+        Article savedArticle = articleRepository.saveAndFlush(article);
 
         // Then
         assertThat(savedArticle).hasFieldOrPropertyWithValue("hashtag", updatedHashtag);
@@ -75,10 +80,10 @@ class JpaRepositoryTest {
     @Test
     void givenTestData_whenDeleting_thenWorksFine() {
         // Given
-        Article article = articleRepository.findById(1L).orElseThrow(); // 없으면 test 종료
-        var previousArticleCount = articleRepository.count(); // 게시글 수
-        var previousArticleCommentCount = articleCommentRepository.count(); // 댓글 수
-        var deletedCommentsSize = article.getArticleComments().size();
+        Article article = articleRepository.findById(1L).orElseThrow();
+        long previousArticleCount = articleRepository.count();
+        long previousArticleCommentCount = articleCommentRepository.count();
+        int deletedCommentsSize = article.getArticleComments().size();
 
         // When
         articleRepository.delete(article);
@@ -87,4 +92,5 @@ class JpaRepositoryTest {
         assertThat(articleRepository.count()).isEqualTo(previousArticleCount - 1);
         assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - deletedCommentsSize);
     }
+
 }

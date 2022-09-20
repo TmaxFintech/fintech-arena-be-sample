@@ -73,7 +73,7 @@ jib {
         image = 'joengenduvel/jre17:alpine3.14'
     }
     container {
-        entrypoint = ['java', '-Dspring profiles.active=test', '-jar', 'jenkins-test-0.0.1-SNAPSHOT.jar']
+        entrypoint = ['java', '-jar', 'fintech-arena-be-0.0.1-SNAPSHOT.jar']
         jvmFlags = [' -Xms512m', '-Xmx512m', '-Xdebug', '-XshowSettings: vm', '-XX: +UnlockExperimentalVMOptions', '-XX:+UseContainerSupport']
         ports = ['8080']
 

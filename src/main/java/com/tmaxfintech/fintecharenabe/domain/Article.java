@@ -37,6 +37,7 @@ public class Article extends AuditingFields {
 
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) @ToString.Exclude // 운영에서 문제 발생 할 수 있음. 댓글을 백업시켜야할 수 있다, 순환참조 막음
+    @OrderBy("createdAt DESC")
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     protected Article() {} // 외부에서 사용할 일 없음. 하이버네이트는 기본 생성자가 필요

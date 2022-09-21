@@ -9,6 +9,10 @@ def dockerPasswd="jihundockerdev"  // 절대 노출 금지
 pipeline {
     agent any
 
+    tools {
+        jdk 'jdk17-arena'
+    }
+
     stages {
         stage('Pull Codes') {
             steps {

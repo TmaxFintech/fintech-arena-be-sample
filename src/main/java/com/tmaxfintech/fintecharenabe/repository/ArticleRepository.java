@@ -5,6 +5,8 @@ import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.tmaxfintech.fintecharenabe.domain.Article;
 import com.tmaxfintech.fintecharenabe.domain.QArticle;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -17,6 +19,11 @@ public interface ArticleRepository extends
         QuerydslPredicateExecutor<Article>, // 검색 기 (정확히 매칭되어야 검색됨. 부분 검색 안됨)
         QuerydslBinderCustomizer<QArticle> // 여기에 QClass 를 넣어야함. 스펙상 이게 옳음.
 {
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+    Page<Article> findByContentContaining(String content, Pageable pageable);
+    Page<Article> findByUserAccount_UserIdContaining(String userId, Pageable pageable);
+    Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
+    Page<Article> findByHashtag(String hashtag, Pageable pageable);
     @Override
     default void customize(QuerydslBindings bindings, QArticle root) { // 검색 필터
         bindings.excludeUnlistedProperties(true);

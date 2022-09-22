@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("JPA 연결 테스트")
 @Import(JpaConfig.class)

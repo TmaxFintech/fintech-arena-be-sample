@@ -29,14 +29,14 @@ public class Article extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // mysql은 auto로 하면 안됨
     private Long id; // id는 setter를 걸지 않는다. jpa 가 자동으로 해주는 것이므로.
 
-    @Setter @ManyToOne(optional = false) private UserAccount userAccount;
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount; // 유저 정보 (ID)
     @Setter @Column(nullable = false) private String title; // 제목
     @Setter @Column(nullable = false, length = 10000) private String content; // 본문
 
     @Setter private String hashtag; // 해시태그, @Transient 같은게 있지 않다면 기본적으로 @Column은 있다고 본다
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) @ToString.Exclude // 운영에서 문제 발생 할 수 있음. 댓글을 백업시켜야할 수 있다, 순환참조 막음
     @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL) @ToString.Exclude // 운영에서 문제 발생 할 수 있음. 댓글을 백업시켜야할 수 있다, 순환참조 막음
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     protected Article() {} // 외부에서 사용할 일 없음. 하이버네이트는 기본 생성자가 필요

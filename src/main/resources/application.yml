@@ -9,7 +9,7 @@ logging:
 
 spring:
   datasource: # database 설정
-    url: jdbc:mysql://192.168.158.142:3306/arena
+    url: jdbc:mysql://192.168.158.143:61342/arena
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

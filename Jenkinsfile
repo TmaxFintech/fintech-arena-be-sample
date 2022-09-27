@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh """
                 cd ${maindir}
-                ./gradlew clean build
+                ./gradlew clean build -x test  // TODO: test step 추가
                 """
             }
         }
